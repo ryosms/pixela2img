@@ -15,12 +15,11 @@ class Pixela2Img:
     def convert(self, user, graph, date=None, mode=None) -> Image:
         svg = self._svg_from_text(self._load_graph(user, graph, date, mode))
         graph_root = svg[1]
-        start_pos = 0
         pixels = []
         for line in graph_root:
-            pixels.extend(self._parse_line(line, start_pos))
-            start_pos += self.PIXEL_SIZE + self.PIXEL_MARGIN
-        self._create_image(pixels)
+            pixels.append(self._parse_line(line))
+
+        self._create_image([p for p in pixels if len(p) > 0])
         return self.image
 
     def save(self, path: str):
@@ -42,26 +41,26 @@ class Pixela2Img:
         return response.content
 
     def _create_image(self, pixels):
-        width = pixels[-1]['x'] + self.PIXEL_SIZE
-        height = pixels[6]['y'] + self.PIXEL_SIZE
+        width = (self.PIXEL_SIZE + self.PIXEL_MARGIN) * len(pixels) - self.PIXEL_MARGIN
+        height = (self.PIXEL_SIZE + self.PIXEL_MARGIN) * 7 - self.PIXEL_MARGIN
         self.image = Image.new('RGBA', (width, height), (255, 255, 255, 0))
 
-        for pixel in pixels:
-            x = pixel['x']
-            y = pixel['y']
-            d = ImageDraw.Draw(self.image)
-            d.rectangle((x, y, x + self.PIXEL_SIZE, y + self.PIXEL_SIZE), pixel['fill'])
+        x = 0
+        for pixels_for_week in pixels:
+            y = 0
+            for pixel in pixels_for_week:
+                d = ImageDraw.Draw(self.image)
+                d.rectangle((x, y, x + self.PIXEL_SIZE, y + self.PIXEL_SIZE), pixel)
+                y += (self.PIXEL_SIZE + self.PIXEL_MARGIN)
+            x += (self.PIXEL_SIZE + self.PIXEL_MARGIN)
 
-    def _parse_line(self, elements, start_x: int):
+    def _parse_line(self, elements):
         pixels = []
-        height = 0
         for elem in elements:
             attr = elem.attrib
             if 'data-date' not in attr:
                 break
-            fill = self._rgb_from_html_color(attr['fill'])
-            pixels.append({'x': start_x, 'y': height, 'fill': fill})
-            height += self.PIXEL_SIZE + self.PIXEL_MARGIN
+            pixels.append(self._rgb_from_html_color(attr['fill']))
 
         return pixels
 
