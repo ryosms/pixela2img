@@ -44,7 +44,7 @@ class Pixela2Img:
     def _create_image(self, pixels):
         width = pixels[-1]['x'] + self.PIXEL_SIZE
         height = pixels[6]['y'] + self.PIXEL_SIZE
-        self.image = Image.new('RGB', (width, height), (0, 0, 0))
+        self.image = Image.new('RGBA', (width, height), (255, 255, 255, 0))
 
         for pixel in pixels:
             x = pixel['x']
