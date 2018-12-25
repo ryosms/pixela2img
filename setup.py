@@ -16,5 +16,5 @@ setup(
     license='MIT',
     packages=find_packages(exclude=['tests']),
     package_dir={'': '.'},
-    install_requires=['pillow', 'defusedxml'],
+    install_requires=['pillow', 'defusedxml', 'requests'],
 )
