@@ -7,6 +7,7 @@ Convert to image files or objects from Pixela graphs.
 :copyright: (c) 2018 ryosms, All rights reserved.
 :license: MIT
 """
+from logging import getLogger, StreamHandler, DEBUG
 from xml.etree.ElementTree import Element
 
 import requests
@@ -14,12 +15,22 @@ from PIL import Image, ImageDraw
 from defusedxml import ElementTree
 
 
+def pixela2img_logger(name, *, level=DEBUG):
+    logger = getLogger(name)
+    handler = StreamHandler()
+    handler.setLevel(level)
+    logger.setLevel(level)
+    logger.addHandler(handler)
+    return logger
+
+
 class Pixela2Img:
     PIXEL_SIZE = 10
     PIXEL_MARGIN = 2
 
-    def __init__(self):
+    def __init__(self, *, logger=None):
         self.image = None
+        self.logger = logger or pixela2img_logger(__name__)
 
     def convert(self, user, graph, date=None, mode=None) -> Image:
         svg = self._svg_from_text(self._load_graph(user, graph, date, mode))
@@ -34,18 +45,21 @@ class Pixela2Img:
     def save(self, path: str):
         if self.image is None:
             raise RuntimeError
+        self.logger.debug(f"image path: {path}")
         self.image.save(path)
 
-    @staticmethod
-    def _load_graph(user, graph, date, mode):
+    def _load_graph(self, user, graph, date, mode):
         endpoint = f"https://pixe.la/v1/users/{user}/graphs/{graph}"
         params = {}
         if mode is not None:
             params['mode'] = mode
         if date is not None:
             params['date'] = date
+        self.logger.debug(f"{endpoint}: {params}")
         response = requests.get(endpoint, params)
+        self.logger.debug(f"response: {response.status_code}")
         if response.status_code != 200:
+            self.logger.error(response.content)
             raise RuntimeError
         return response.content
 
@@ -53,6 +67,7 @@ class Pixela2Img:
         width = (self.PIXEL_SIZE + self.PIXEL_MARGIN) * len(pixels) - self.PIXEL_MARGIN
         height = (self.PIXEL_SIZE + self.PIXEL_MARGIN) * 7 - self.PIXEL_MARGIN
         self.image = Image.new('RGBA', (width, height), (255, 255, 255, 0))
+        self.logger.debug(f"image size: {self.image.size}")
 
         x = 0
         for pixels_for_week in pixels:
