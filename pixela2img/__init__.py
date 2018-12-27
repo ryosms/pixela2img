@@ -1,3 +1,12 @@
+"""
+pixela2img
+~~~~~~~~~~
+
+Convert to image files or objects from Pixela graphs.
+
+:copyright: (c) 2018 ryosms, All rights reserved.
+:license: MIT
+"""
 from xml.etree.ElementTree import Element
 
 import requests

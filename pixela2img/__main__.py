@@ -6,7 +6,7 @@ from pixela2img import Pixela2Img
 
 def _parse_argument():
     parser = ArgumentParser(prog='pixela2img',
-                            description='Create image files or objects from pixela graphs.',
+                            description='Create a `png` image file from a pixela graph.',
                             epilog='Thanks Pixela: https://pixe.la')
     parser.add_argument('-u', '--user-name', required=True, help='Pixela username.')
     parser.add_argument('-g', '--graph', required=True, help='Pixela graph id.')
