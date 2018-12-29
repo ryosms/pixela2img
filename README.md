@@ -9,7 +9,7 @@ Create image files (or objects) from Pixela graphs.
 
 * Create a `png` image below!
 
-    ![](./docs/pixela2img-pixela2img-20181229.png)
+    ![](https://github.com/ryosms/pixela2img/blob/master/docs/pixela2img-pixela2img-20181229.png?raw=true)
 
 ## Support
 
@@ -17,10 +17,10 @@ Create image files (or objects) from Pixela graphs.
 
 ## Usage
 
-Install using `pip` from github.(`not` registered to PyPI yet)
+Install using `pip`.
 
 ```bash
-$ pip install git+https://github.com/ryosms/pixela2img#egg=pixela2img
+$ pip install pixela2img
 ```
 
 Create a `png` image with cli.
@@ -48,7 +48,7 @@ images[0].save('pixela.gif', save_all=True, append_images=images[1:], loop=0)
 
 Created animation gif below!
 
-![](docs/pixela.gif)
+![](https://github.com/ryosms/pixela2img/blob/master/docs/pixela.gif?raw=true)
 
 ## for Developer
 

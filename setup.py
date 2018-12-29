@@ -8,7 +8,7 @@ with open(readme_path) as f:
 
 setup(
     name='pixela2img',
-    varsion='2018.1',
+    version=2018.1,
     author='ryosms',
     url='https://github.com/ryosms/pixela2img',
     description="Create image files or objects from pixela svg graphs.",
