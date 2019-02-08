@@ -54,17 +54,19 @@ Created animation gif below!
 
 #### require
 
-* Python 3.7+
-* pipenv
+* Python 3.6+
+* [pipenv](https://pipenv.readthedocs.io/en/latest/) or [Poetry](https://poetry.eustace.io/)
 
 #### prepare
 
 1. clone (or fork) this repository.
-2. install dependencies with pipenv
+2. install dependencies
 3. edit code!
 
 ```bash
 $ git clone https://github.com/ryosms/pixela2img
 $ cd pixela2img
 $ pipenv install
+# or
+$ poetry install
 ```
